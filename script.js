@@ -1,4 +1,3 @@
-let inputArr = [];
 let groupArr = [];
 
 /* ******************************** //
@@ -66,18 +65,69 @@ const operate = (operator, a, b) => {
         case "!":
             operationResult = factorial(a);
             break;
-        case "(":
-            break;
-        case ")":
-            break;
         default:
             break;
     }
     return operationResult;
 }
 
+const handleParenthesis = (expression) => {
+    expressionStr = expression.replace(/[\(]/g, " (").replace(/[\)]/g, ") ");
+    console.log(expressionStr);
+    inputArr = expressionStr.split(' ');
+    for(let i=0; i<inputArr.length; i++) {
+        if(inputArr[i].match(/^\(.*\)$/)) {
+            inputArr[i] = `${inputArr[i]}`.substring(1, inputArr[i].length-1);
+            console.log(inputArr[i]);
+            inputArr[i] = calculate(inputArr[i]);
+        }
+    }
+    expressionStr = inputArr.join('');
+    if(expressionStr.includes('(')) {
+        expressionStr = handleParenthesis(expressionStr);
+    }
+    return expressionStr;
+}
+
 const calculate = (expression) => {
     let result = '';
+    let expressionStr = `${expression}`;
+    let inputArr;
+
+    // handle Parentheses first
+    if(expressionStr.includes('(')) {
+        expressionStr = handleParenthesis(expressionStr);
+    }
+
+    // handle Exponents
+    if(expressionStr.includes('^')) {
+        expressionStr = expressionStr.replace(/[\d]+\^[\d]+/g, (x) => {
+            return ` ${x} `
+        });
+        console.log(expressionStr);
+        inputArr = expressionStr.split(' ');
+        for(let i=0; i<inputArr.length; i++) {
+            if(inputArr[i].match(/^[\d]+\^[\d]+$/)) {
+                const expArr = `${inputArr[i]}`.split('^');
+                inputArr[i] = operate('^', expArr[0], expArr[1]);
+                console.log(inputArr[i]);
+            }
+        }
+        expressionStr = inputArr.join('');
+        console.log(expressionStr);
+        expressionStr = calculate(expressionStr);
+    }
+    // handle Multiplication and Division (in order from left to right)
+
+    // handle Addition and Subtraction (in order from left to right)
+    //expressionStr = expressionStr.replace(/[\+]/g, " + ").replace(/[-]/g, " - ");
+    //console.log(expressionStr);
+    //inputArr = expressionStr.split(' ').reverse();
+    //a = inputArr.pop();
+    //b = inputArr.join(' ');
+    //add(a, b);
+    //subtract(a, b);
+
     return result;
 }
 
@@ -167,7 +217,6 @@ const enterEquals = () => {
 const enterClear = (event) => {
     const inputContainer = document.getElementById("show_input");
     inputContainer.innerHTML = `${event.target.value}`;
-    inputArr = [];
     groupArr = [];
 }
 
