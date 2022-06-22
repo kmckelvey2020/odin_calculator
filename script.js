@@ -42,80 +42,102 @@ const factorial = (a) => {
 }
 
 const operate = (operator, a, b) => {
-    let operationResult;
     switch (operator) {
         case "+":
-            operationResult = add(a, b);
+            return a + b;
             break;
         case "-":
-            operationResult = subtract(a, b);
+            return a - b;
             break;
         case "*":
-            operationResult = multiply(a, b);
+            return a * b;
             break;
         case "/":
-            operationResult = divide(a, b);
+            return (a/b).toFixed(2);
             break;
         case "%":
-            operationResult = modulus(a, b);
+            return a % b;
             break;
         case "^":
-            operationResult = power(a, b);
+            return Math.pow(a, b);
             break;
         case "!":
-            operationResult = factorial(a);
+            let factorialResult = 1;
+            for(let i=1; i<=a; i++) {
+                factorialResult *= i;
+            }
+            if(a>=0) {
+                return factorialResult;
+            } else {
+                return undefined;
+            }
             break;
         default:
             break;
     }
-    return operationResult;
 }
 
 const handleParenthesis = (expression) => {
-    expressionStr = expression.replace(/[\(]/g, " (").replace(/[\)]/g, ") ");
+    let expressionStr = `${expression}`.replace(/[\(]/g, " (").replace(/[\)]/g, ") ");
     console.log(expressionStr);
-    inputArr = expressionStr.split(' ');
-    for(let i=0; i<inputArr.length; i++) {
-        if(inputArr[i].match(/^\(.*\)$/)) {
-            inputArr[i] = `${inputArr[i]}`.substring(1, inputArr[i].length-1);
-            console.log(inputArr[i]);
-            inputArr[i] = calculate(inputArr[i]);
-        }
-    }
+    const inputArr = expressionStr
+        .split(' ')
+        .map((element) => {
+            // If a complete expression contained within () exists, strip the (), evaluate the expression and replace the () expression with its result in inputArr
+            if(element.match(/^\(.*\)$/)) {
+                element = `${element}`.substring(1, element.length-1);
+                console.log(element);
+                return calculate(element);
+            } else return element;
+        });
     expressionStr = inputArr.join('');
+    console.log(expressionStr);
+    // If a set of outer () exists after inner () are evaluated, handle those ()
     if(expressionStr.includes('(')) {
         expressionStr = handleParenthesis(expressionStr);
     }
+    // Return once all inner and outer () have been handled
+    return expressionStr;
+}
+
+const handleExponents = (expression) => {
+    // Order of powers is reversed so that if there are stacked exponents (power to a power), the top level exponent will be handled first: 2^3^4 will be handled as 2^(3^4).
+    let expressionStr = `${expression}`.split('^').reverse().join('^').replace(/[\d]+\^[\d]+/, (x) => {
+        return ` ${x} `
+    });
+    console.log(expressionStr);
+    const inputArr = expressionStr
+        .split(' ')
+        .map((element) => {
+            // If a number ([\d]+) is raised to the power of another number using ^, the power is evaluated and returned to the inputArr
+            if(`${element}`.match(/^[\d]+\^[\d]+$/)) {
+                const expArr = `${element}`.split('^');
+                element = operate('^', expArr[1], expArr[0]);
+                console.log(element);
+                return element;
+            } else return element;
+        });
+    expressionStr = inputArr.join('').split('^').reverse().join('^');
+    console.log(expressionStr);
+    // If another power exists, recursively call handleExponents
+    if(expressionStr.includes('^')) {
+        expressionStr = handleExponents(expressionStr);
+    }
+    // Return once all exponents have been handled
     return expressionStr;
 }
 
 const calculate = (expression) => {
-    let result = '';
     let expressionStr = `${expression}`;
-    let inputArr;
 
     // handle Parentheses first
     if(expressionStr.includes('(')) {
         expressionStr = handleParenthesis(expressionStr);
     }
 
-    // handle Exponents
+    // handle Exponents second
     if(expressionStr.includes('^')) {
-        expressionStr = expressionStr.replace(/[\d]+\^[\d]+/g, (x) => {
-            return ` ${x} `
-        });
-        console.log(expressionStr);
-        inputArr = expressionStr.split(' ');
-        for(let i=0; i<inputArr.length; i++) {
-            if(inputArr[i].match(/^[\d]+\^[\d]+$/)) {
-                const expArr = `${inputArr[i]}`.split('^');
-                inputArr[i] = operate('^', expArr[0], expArr[1]);
-                console.log(inputArr[i]);
-            }
-        }
-        expressionStr = inputArr.join('');
-        console.log(expressionStr);
-        expressionStr = calculate(expressionStr);
+        expressionStr = handleExponents(expressionStr);
     }
     // handle Multiplication and Division (in order from left to right)
 
@@ -128,7 +150,7 @@ const calculate = (expression) => {
     //add(a, b);
     //subtract(a, b);
 
-    return result;
+    return expressionStr;
 }
 
 const isValidExpression = (expression) => {
