@@ -1,6 +1,5 @@
 let inputArr = [];
 let groupArr = [];
-let result;
 
 /* ******************************** //
 //     OPERATION FUNCTIONS          //
@@ -80,7 +79,8 @@ const operate = (operator, a, b) => {
 const calculate = () => {
     let expression = document.getElementById("show_input").innerHTML;
     validateExpression(expression);
-
+    let result = '';
+    return result;
 }
 
 const validateExpression = (expression) => {
@@ -114,46 +114,30 @@ const validParenthesis = (expression) => {
 }
 
 const validOperators = (expression) => {
-    const operators = ["+", "-", "*", "/", "^", "%", "!"];
+    const operators = ["+", "-", "*", "/", "^", "%"];
     const arr = expression.split('');
     for(let i=1; i<arr.length; i++) {
-        if(operators.includes(arr[i]) && operators.includes(arr[i-1])) {
+        // Cannot have two consecutive operators: "+/"
+        if((operators.includes(arr[i-1]) && operators.includes(arr[i]))
+            // Cannot have open parenthesis followed by an operator: "(+"
+            || (arr[i-1]==='(' && (operators.includes(arr[i]) || arr[i]==="!"))
+            // Cannot have an operator followed by a close parenthesis: "+)"
+            || ((operators.includes(arr[i-1]) || arr[i]==="!") && arr[i]===')')
+            // Cannot have an operator followed by !: "+!"
+            || (operators.includes(arr[i-1]) && arr[i]==='!')) {
             return [false, "Error: Invalid operation. Please enter a valid mathematical expression."];
         }
     }
     return [true, ''];
 }
 
-const enterNumber = (event) => {
-    const inputContainer = document.getElementById("show_input");
-    console.log(event.target);
-    inputContainer.innerHTML += `${event.target.value}`;
-}
-
-const enterOperator = (event) => {
-    const inputContainer = document.getElementById("show_input");
-    inputContainer.innerHTML += `${event.target.value}`;
-}
-
-const enterOpenGroup = (event) => {
-    const inputContainer = document.getElementById("show_input");
-    inputContainer.innerHTML += `${event.target.value}`;
-}
-
-const enterCloseGroup = (event) => {
-    const inputContainer = document.getElementById("show_input");
-    inputContainer.innerHTML += `${event.target.value}`;
-}
-
-const enterDecimal = (event) => {
+const enterInput = (event) => {
     const inputContainer = document.getElementById("show_input");
     inputContainer.innerHTML += `${event.target.value}`;
 }
 
 const enterEquals = (event) => {
-    const inputContainer = document.getElementById("show_input");
-    inputContainer.innerHTML += `${event.target.value}`;
-    calculate();
+    const result = calculate();
 }
 
 const enterClear = (event) => {
@@ -170,23 +154,13 @@ const enterDelete = () => {
 }
 
 const addListeners = () => {
-    const numbers = document.querySelectorAll(".number");
-    const operators = document.querySelectorAll(".operation");
-    const openGroup = document.querySelector(".parenthesisL");
-    const closeGroup = document.querySelector(".parenthesisR");
-    const decimals = document.querySelector(".decimal");
+    const inputs = document.querySelectorAll(".input");
     const equals = document.querySelector(".equals");
     const clear = document.querySelector(".clear");
     const deleteOne = document.querySelector(".delete");
-    numbers.forEach((number) => {
-        number.addEventListener('click', enterNumber);
+    inputs.forEach((input) => {
+        input.addEventListener('click', enterInput);
     });
-    operators.forEach((operation) => {
-        operation.addEventListener('click', enterOperator);
-    });
-    openGroup.addEventListener('click', enterOpenGroup);
-    closeGroup.addEventListener('click', enterCloseGroup);
-    decimals.addEventListener('click', enterDecimal);
     equals.addEventListener('click', enterEquals);
     clear.addEventListener('click', enterClear);
     deleteOne.addEventListener('click', enterDelete);
