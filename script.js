@@ -1,47 +1,13 @@
-let groupArr = [];
-
 /* ******************************** //
 //     OPERATION FUNCTIONS          //
 // ******************************** */
-
-const add = (a, b) => {
-    return a + b;
-}
-
-const subtract = (a, b) => {
-    return a - b;
-}
-
-const multiply = (a, b) => {
-    return a * b;
-}
-
-const divide = (a, b) => {
-    return (a/b).toFixed(2);
-}
-
-const power = (a, b) => {
-    return Math.pow(a, b);
-}
 
 const modulus = (a, b) => {
     return a % b;
 }
 
-// If a<0, factorial is undefined
-const factorial = (a) => {
-    let factorialResult = 1;
-    for(let i=1; i<=a; i++) {
-        factorialResult *= i;
-    }
-    if(a>=0) {
-        return factorialResult;
-    } else {
-        return undefined;
-    }
-}
-
-const operate = (operator, a, b) => {
+const operate = (operator, value1, value2) => {
+    const a = Number(value1), b = Number(value2);
     switch (operator) {
         case "+":
             return a + b;
@@ -97,7 +63,7 @@ const handleParenthesis = (expression) => {
         expressionStr = handleParenthesis(expressionStr);
     }
     // Return once all inner and outer () have been handled
-    return expressionStr;
+    return `${expressionStr}`;
 }
 
 const handleExponents = (expression) => {
@@ -124,7 +90,74 @@ const handleExponents = (expression) => {
         expressionStr = handleExponents(expressionStr);
     }
     // Return once all exponents have been handled
-    return expressionStr;
+    return `${expressionStr}`;
+}
+
+const handleMultiplicationDivision = (expression) => {
+    let result = '';
+    // Validate that only digits, *, /, +, and - are used in expression
+    if(expression.match(/[^-\d\+\/\*]/g)) {
+        // Invalid
+        console.log(`Error: Invalid input in handleMultiplicationDivision function: ${expression}`);
+    } else if(!expression.match(/[^\d\/\*]/g)) {
+        // Multiplication and division are handled in order from left to right.
+        let expressionStr = `${expression}`.replace(/\*/g, " * ").replace(/\//g, " / ");
+        console.log(expressionStr);
+        const inputArr = expressionStr.split(' ');
+        console.log(inputArr);
+        result = `${inputArr[0]}`;
+        console.log(result);
+        for(let i=1; i<inputArr.length; i++) {
+            result = operate(`${inputArr[i]}`, result, `${inputArr[i+1]}`);
+            i++;
+            console.log(result);
+        }
+    } else {
+        // Store addition and subtraction operators so that we can replace them once we handle the mult and div
+        const addSubtOperatorArr = expression.match(/[-\+]/g);
+        console.log(addSubtOperatorArr);
+        // Temporarily remove +, - operators
+        let expressionStr = `${expression}`
+            .replace(/\+/g, ' ')
+            .replace(/-/g, ' ');
+        console.log(expressionStr);
+        // Each element is a digit or a series of *,/, and digits to be evaluated
+        const inputArr = expressionStr
+            .split(' ')
+            .map((element, index) => {
+                if(index<addSubtOperatorArr.length) {
+                    return `${calculate(element)}${addSubtOperatorArr[index]}`;
+                } else {
+                    return `${calculate(element)}`;
+                }
+        });
+        result = inputArr.join('');
+        console.log(result);
+    }
+    return `${result}`;
+}
+
+const handleAdditionSubtraction = (expression) => {
+    let result = '';
+    // Validate that only digits, +, and - are used in expression
+    if(expression.match(/[^-\d\+\.]/g)) {
+        // Invalid
+        console.log(`Error: Invalid input in handleAdditionSubtraction function: ${expression}`);
+    } else {
+        // Addition and subtraction are handled in order from left to right.
+        let expressionStr = `${expression}`.replace(/\+/g, " + ").replace(/-/g, " - ");
+        console.log(expressionStr);
+        const inputArr = expressionStr.split(' ');
+        console.log(inputArr);
+        result = `${inputArr[0]}`;
+        console.log(result);
+        for(let i=1; i<inputArr.length; i++) {
+            result = operate(`${inputArr[i]}`, result, `${inputArr[i+1]}`);
+            i++;
+            console.log(result);
+        }
+    }
+    return `${result}`;
 }
 
 const calculate = (expression) => {
@@ -139,17 +172,17 @@ const calculate = (expression) => {
     if(expressionStr.includes('^')) {
         expressionStr = handleExponents(expressionStr);
     }
+
     // handle Multiplication and Division (in order from left to right)
+    if(expressionStr.includes('*') || expressionStr.includes('/')) {
+        expressionStr = handleMultiplicationDivision(expressionStr);
+    }
 
     // handle Addition and Subtraction (in order from left to right)
-    //expressionStr = expressionStr.replace(/[\+]/g, " + ").replace(/[-]/g, " - ");
-    //console.log(expressionStr);
-    //inputArr = expressionStr.split(' ').reverse();
-    //a = inputArr.pop();
-    //b = inputArr.join(' ');
-    //add(a, b);
-    //subtract(a, b);
-
+    if(expressionStr.includes('+') || expressionStr.includes('-')) {
+        expressionStr = handleAdditionSubtraction(expressionStr);
+    }
+    
     return expressionStr;
 }
 
@@ -190,6 +223,7 @@ const isValidParenthesis = (expression) => {
 }
 
 const isValidOperators = (expression) => {
+    // Todo: Check to make sure expression doesn't end with an operator that requires two operands. Check to make sure expression doesn't begin with an operator (if it begins with -, treat as negative). Ignore leading + sign.
     const operators = ["+", "-", "*", "/", "^", "%"];
     const arr = expression.split('');
     for(let i=1; i<arr.length; i++) {
@@ -233,13 +267,12 @@ const enterEquals = () => {
             result = calculate(expression);
         }
     }
-    inputContainer.innerHTML += `\n${result}`;
+    inputContainer.innerHTML += `\r${result}`;
 }
 
 const enterClear = (event) => {
     const inputContainer = document.getElementById("show_input");
     inputContainer.innerHTML = `${event.target.value}`;
-    groupArr = [];
 }
 
 const enterDelete = () => {
