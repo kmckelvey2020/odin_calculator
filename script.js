@@ -94,8 +94,19 @@ const validateExpression = (expression) => {
         return x.replace(/\)/, ')*');
     });
     console.log(expression);
+    console.log(validInput(expression));
     console.log(validParenthesis(expression));
     console.log(validOperators(expression));
+}
+
+const validInput = (expression) => {
+    const invalidInputs = /[^\d\(\)+-*/^%!]/g;
+    const invalidArr = expression.match(invalidInputs);
+    if(invalidArr.length>0) {
+        return [false, "Error: Invalid entry. Please enter a valid mathematical expression."];
+    } else {
+        return [true, ''];
+    }
 }
 
 const validParenthesis = (expression) => {
