@@ -15,42 +15,46 @@
         </header>
         <main id="main" class="main">
             <div class="calculator_container" id="calculator_container">
-            <div class="output_screen" id="output_screen"></div>
+            <div class="output_screen" id="output_screen">
+                <div class="show_input" id="show_input"></div>
+            </div>
             <div class="btn_group" id="btn_group">
-                <div class="row7 operations" id="row7">
-                    <button class="btn grouping parenthesisL" id="parenthesisL" value="parenthesisL">(</button>
-                    <button class="btn grouping parenthesisR" id="parenthesisR" value="parenthesisR">)</button>
-                    <button class="btn operation factorial" id="factorial" value="factorial">!</button>
+                <div class="row7" id="row7">
+                    <button class="btn clear" id="clear" value="">CLEAR</button>
+                    <button class="btn delete" id="delete" value="">DELETE</button>
                 </div>
-                <div class="row6 operations" id="row6">
-                    <button class="btn operation power" id="power" value="power">^</button>
+                <div class="row6" id="row6">
                     <button class="btn operation mod" id="mod" value="mod">% (modulus)</button>
-                    <button class="btn operation divide" id="divide" value="divide">/</button>
                 </div>
-                <div class="row5 operations" id="row5">
-                    <button class="btn operation multiply" id="multiply" value="multiply">*</button>
-                    <button class="btn operation add" id="add" value="add">+</button>
-                    <button class="btn operation subtract" id="subtract" value="subtract">-</button>
+                <div class="row5" id="row5">
+                    <button class="btn grouping parenthesisL" id="parenthesisL" value="(">(</button>
+                    <button class="btn grouping parenthesisR" id="parenthesisR" value=")">)</button>
+                    <button class="btn operation power" id="power" value="^">^</button>
+                    <button class="btn operation divide" id="divide" value="/">/</button>
                 </div>
-                <div class="row4 numbers" id="row4">
-                    <button class="btn number nine" id="nine" value="nine">9</button>
-                    <button class="btn number eight" id="eight" value="eight">8</button>
-                    <button class="btn number seven" id="seven" value="seven">7</button>
+                <div class="row4" id="row4">
+                    <button class="btn number nine" id="nine" value="9">9</button>
+                    <button class="btn number eight" id="eight" value="8">8</button>
+                    <button class="btn number seven" id="seven" value="7">7</button>
+                    <button class="btn operation multiply" id="multiply" value="*">*</button>
                 </div>
-                <div class="row3 numbers" id="row3">
-                    <button class="btn number six" id="six" value="six">6</button>
+                <div class="row3" id="row3">
+                    <button class="btn number six" id="six" value="6">6</button>
                     <button class="btn number five" id="five" value="5">5</button>
                     <button class="btn number four" id="four" value="4">4</button>
+                    <button class="btn operation subtract" id="subtract" value="-">-</button>
                 </div>
-                <div class="row2 numbers" id="row2">
+                <div class="row2" id="row2">
                     <button class="btn number three" id="three" value="3">3</button>
                     <button class="btn number two" id="two" value="2">2</button>
                     <button class="btn number one" id="one" value="1">1</button>
+                    <button class="btn operation add" id="add" value="+">+</button>
                 </div>
-                <div class="row1 numbers" id="row1">
+                <div class="row1" id="row1">
                     <button class="btn number zero" id="zero" value="0">0</button>
-                    <button class="btn decimal" id="decimal" value="decimal">.</button>
-                    <button class="btn operation equals" id="equals" value="equals">=</button>
+                    <button class="btn operation factorial" id="factorial" value="!">!</button>
+                    <button class="btn decimal" id="decimal" value=".">.</button>
+                    <button class="btn equals" id="equals" value="=">=</button>
                 </div>
             </div>
         </main>
