@@ -76,40 +76,30 @@ const operate = (operator, a, b) => {
     return operationResult;
 }
 
-const calculate = () => {
-    let expression = document.getElementById("show_input").innerHTML;
-    validateExpression(expression);
+const calculate = (expression) => {
     let result = '';
     return result;
 }
 
-const validateExpression = (expression) => {
-    expression = expression.replace(/[\d]+\(/g, (x) => {
-        return x.replace(/\(/, '*(');
-    });
-    expression = expression.replace(/\)[\d]+/g, (x) => {
-        return x.replace(/\)/, ')*');
-    });
-    expression = expression.replace(/\)\(/g, (x) => {
-        return x.replace(/\)/, ')*');
-    });
+const isValidExpression = (expression) => {
     console.log(expression);
-    console.log(validInput(expression));
-    console.log(validParenthesis(expression));
-    console.log(validOperators(expression));
+    console.log(isValidInput(expression));
+    console.log(isValidParenthesis(expression));
+    console.log(isValidOperators(expression));
+    return isValidInput(expression)[0] && isValidParenthesis(expression)[0] && isValidOperators(expression)[0];
 }
 
-const validInput = (expression) => {
+const isValidInput = (expression) => {
     const invalidInputs = /[^-%!\+\*\/\^\(\)\d]/g;
     const invalidArr = expression.match(invalidInputs);
-    if(invalidArr.length>0) {
+    if(invalidArr) {
         return [false, "Error: Invalid entry. Please enter a valid mathematical expression."];
     } else {
         return [true, ''];
     }
 }
 
-const validParenthesis = (expression) => {
+const isValidParenthesis = (expression) => {
     const parentheses = expression.replace(/[^\(\)]/g, '');
     const matches = {
         ')':'(',
@@ -127,7 +117,7 @@ const validParenthesis = (expression) => {
     return (arr.length<1 ? [true, ''] : [false, "Error: Invalid parentheses. Please enter a valid mathematical expression."]);
 }
 
-const validOperators = (expression) => {
+const isValidOperators = (expression) => {
     const operators = ["+", "-", "*", "/", "^", "%"];
     const arr = expression.split('');
     for(let i=1; i<arr.length; i++) {
@@ -150,14 +140,28 @@ const enterInput = (event) => {
     inputContainer.innerHTML += `${event.target.value}`;
 }
 
-const enterEquals = (event) => {
-    let result;
-    if(!document.getElementById("show_input").innerHTML) {
+const enterEquals = () => {
+    const inputContainer = document.getElementById("show_input");
+    let result = "";
+    if(!inputContainer.innerHTML) {
         result = "Error: No expression entered.";
     } else {
-        result = calculate();
+        let expression = inputContainer.innerHTML;
+        // Rewrite multiplication implied by parentheses with explicit * for parsing
+        expression = expression.replace(/[\d]+\(/g, (x) => {
+            return x.replace(/\(/, '*(');
+        });
+        expression = expression.replace(/\)[\d]+/g, (x) => {
+            return x.replace(/\)/, ')*');
+        });
+        expression = expression.replace(/\)\(/g, (x) => {
+            return x.replace(/\)/, ')*');
+        });
+        if(isValidExpression(expression)) {
+            result = calculate(expression);
+        }
     }
-    console.log(result);
+    inputContainer.innerHTML += `\n${result}`;
 }
 
 const enterClear = (event) => {
