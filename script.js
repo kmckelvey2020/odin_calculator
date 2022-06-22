@@ -100,7 +100,7 @@ const validateExpression = (expression) => {
 }
 
 const validInput = (expression) => {
-    const invalidInputs = /[^\d\(\)+-*/^%!]/g;
+    const invalidInputs = /[^-%!\+\*\/\^\(\)\d]/g;
     const invalidArr = expression.match(invalidInputs);
     if(invalidArr.length>0) {
         return [false, "Error: Invalid entry. Please enter a valid mathematical expression."];
@@ -151,7 +151,12 @@ const enterInput = (event) => {
 }
 
 const enterEquals = (event) => {
-    const result = calculate();
+    let result;
+    if(!document.getElementById("show_input").innerHTML) {
+        result = "Error: No expression entered.";
+    } else {
+        result = calculate();
+    }
     console.log(result);
 }
 
