@@ -90,6 +90,9 @@ const validateExpression = (expression) => {
     expression = expression.replace(/\)[\d]+/g, (x) => {
         return x.replace(/\)/, ')*');
     });
+    expression = expression.replace(/\)\(/g, (x) => {
+        return x.replace(/\)/, ')*');
+    });
     console.log(expression);
     console.log(validParenthesis(expression));
     console.log(validOperators(expression));
@@ -138,6 +141,7 @@ const enterInput = (event) => {
 
 const enterEquals = (event) => {
     const result = calculate();
+    console.log(result);
 }
 
 const enterClear = (event) => {
@@ -145,7 +149,6 @@ const enterClear = (event) => {
     inputContainer.innerHTML = `${event.target.value}`;
     inputArr = [];
     groupArr = [];
-    result = undefined;
 }
 
 const enterDelete = () => {
