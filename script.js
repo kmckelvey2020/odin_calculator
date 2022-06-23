@@ -58,11 +58,13 @@ const handleParenthesis = (expression) => {
 
 const handleExponents = (expression) => {
     let expressionStr = '';
-    // Validate that only digits, ^, *, /, +, and - are used in expression
-    if(expression.match(/[^-\d\+\/\*\^]/g)) { // Invalid
+    // Validate that only digits, decimals, ^, *, /, +, and - are used in expression
+    if(expression.match(/[^-\d\+\/\*\^\.]/g)) { // Invalid
         console.log(`Error: Invalid input in handleExponents function: ${expression}`);
-    } else if(!expression.match(/[^\d\^]/g)) { // If only digits and ^ are present
+    } else if(!expression.match(/[^\d\^\.]/g)) { // If only digits/decimals and ^ are present
         // Order of multiple consecutive powers is reversed so that if there are stacked exponents (power to a power), the top level exponent will be handled first: 2^3^4 will be handled as 2^(3^4).
+
+        //TODO: INSTEAD OF REVERSING, USE POP TO DO TOP LEVEL EXPONENTS FIRST
         expressionStr = `${expression}`.split('^').reverse().join('^').replace(/[\d]+\^[\d]+/, (x) => {
             return ` ${x} `
         });
@@ -91,11 +93,11 @@ const handleExponents = (expression) => {
 const handleMultiplicationDivision = (expression) => {
     let result = '';
     // Validate that only digits, *, /, +, and - are used in expression
-    if(expression.match(/[^-\d\+\/\*]/g)) { //Invalid
+    if(expression.match(/[^-\d\+\/\*\.]/g)) { //Invalid
         console.log(`Error: Invalid input in handleMultiplicationDivision function: ${expression}`);
-    } else if(!expression.match(/[^\d\/\*]/g)) { // If only digits and *, / are present
+    } else if(!expression.match(/[^\d\/\*\.]/g)) { // If only digits/decimals and *, / are present
         // Multiplication and division are handled in order from left to right.
-        let expressionStr = `${expression}`.replace(/\*\//g, (x) => {
+        let expressionStr = `${expression}`.replace(/[\*\/]/g, (x) => {
             return ` ${x} `;
         });
         const inputArr = expressionStr.split(' ');
@@ -118,7 +120,7 @@ const handleAdditionSubtraction = (expression) => {
         console.log(`Error: Invalid input in handleAdditionSubtraction function: ${expression}`);
     } else {
         // Addition and subtraction are handled in order from left to right.
-        let expressionStr = `${expression}`.replace(/-\+/g, (x) => {
+        let expressionStr = `${expression}`.replace(/[-\+]/g, (x) => {
             return ` ${x} `;
         });
         const inputArr = expressionStr.split(' ');
@@ -196,7 +198,7 @@ const isValidExpression = (expression) => {
 }
 
 const isValidInput = (expression) => {
-    const invalidInputs = /[^-%!\+\*\/\^\(\)\d]/g;
+    const invalidInputs = /[^-%!\+\*\/\^\(\)\.\d]/g;
     const invalidArr = expression.match(invalidInputs);
     if(invalidArr) {
         return [false, "Error: Invalid entry. Please enter a valid mathematical expression."];
@@ -251,6 +253,7 @@ const enterInput = (event) => {
 }
 
 const enterEquals = () => {
+    const inputOutputContainer = document.getElementById("input_output_screen");
     const inputContainer = document.getElementById("show_input");
     let result = "";
     if(!inputContainer.innerHTML) {
@@ -271,17 +274,37 @@ const enterEquals = () => {
             result = calculate(expression);
         }
     }
-    const outputContainer = document.getElementById("output_screen");
-    const output = document.createElement('div');
-    output.id = "output";
-    output.className = "output";
-    output.innerHTML = `${result}`;
-    outputContainer.appendChild(output);
+
+    inputContainer.id = "old_input_container";
+    inputContainer.className = "old_input_container";
+
+    const newInputContainer = document.createElement('div');
+    newInputContainer.id = "show_input";
+    newInputContainer.className = "show_input";
+    newInputContainer.style.textAlign = "right";
+    newInputContainer.innerHTML = '';
+    
+    const outputContainer = document.createElement('div');
+    outputContainer.id = "show_output";
+    outputContainer.className = "show_output";
+    outputContainer.style.textAlign = "right";
+    outputContainer.innerHTML = `${result}`;
+
+    inputOutputContainer.appendChild(outputContainer);
+    inputOutputContainer.appendChild(newInputContainer);
 }
 
 const enterClear = (event) => {
-    const inputContainer = document.getElementById("show_input");
-    inputContainer.innerHTML = `${event.target.value}`;
+    const inputOutputContainer = document.getElementById("input_output_screen");
+    inputOutputContainer.innerHTML = '';
+
+    const newInputContainer = document.createElement('div');
+    newInputContainer.id = "show_input";
+    newInputContainer.className = "show_input";
+    newInputContainer.style.textAlign = "right";
+    newInputContainer.innerHTML = '';
+
+    inputOutputContainer.appendChild(newInputContainer);
 }
 
 const enterDelete = () => {
@@ -307,3 +330,5 @@ const addListeners = () => {
 }
 
 addListeners();
+
+module.exports = calculate;
