@@ -15,7 +15,7 @@ const operate = (operator, value1, value2) => {
             return a * b;
             break;
         case "/":
-            return (a/b).toFixed(2);
+            return (a/b).toFixed(3);
             break;
         case "^":
             return Math.pow(a, b);
@@ -92,7 +92,7 @@ const handleExponents = (expression) => {
 
 const handleMultiplicationDivision = (expression) => {
     let result = '';
-    // Validate that only digits, *, /, +, and - are used in expression
+    // Validate that only digits, decimals, *, /, +, and - are used in expression
     if(expression.match(/[^-\d\+\/\*\.]/g)) { //Invalid
         console.log(`Error: Invalid input in handleMultiplicationDivision function: ${expression}`);
     } else if(!expression.match(/[^\d\/\*\.]/g)) { // If only digits/decimals and *, / are present
@@ -100,10 +100,13 @@ const handleMultiplicationDivision = (expression) => {
         let expressionStr = `${expression}`.replace(/[\*\/]/g, (x) => {
             return ` ${x} `;
         });
+        console.log(expressionStr);
         const inputArr = expressionStr.split(' ');
+        console.log(inputArr);
         result = `${inputArr[0]}`;
         for(let i=1; i<inputArr.length; i++) {
             result = operate(`${inputArr[i]}`, result, `${inputArr[i+1]}`);
+            console.log(result);
             i++;
         }
     } else {
@@ -130,7 +133,7 @@ const handleAdditionSubtraction = (expression) => {
             i++;
         }
     }
-    return `${result}`;
+    return `${Number(result).toFixed(2)}`;
 }
 
 /* ************************************ //
@@ -140,9 +143,11 @@ const handleAdditionSubtraction = (expression) => {
 const tempRemoveOperators = (untargetedOperRegex, expression) => {
     // Store untargeted operators so that we can replace them once we handle the target operator.
     const operatorArr = expression.match(untargetedOperRegex);
+    console.log(operatorArr);
     // Temporarily remove untargeted operators operators
     let expressionStr = `${expression}`
         .replace(untargetedOperRegex, ' ');
+    console.log(expressionStr);
     // Each element is now a digit or a series of target operators and digits to be evaluated
     const inputArr = expressionStr
         .split(' ')
@@ -153,7 +158,10 @@ const tempRemoveOperators = (untargetedOperRegex, expression) => {
                 return `${calculate(element)}`;
             }
     });
-    return `${inputArr.join('')}`;
+    console.log(inputArr);
+    expressionStr = inputArr.join('');
+    console.log(expressionStr);
+    return `${expressionStr}`;
 }
 
 /* ************************************ //
@@ -183,7 +191,7 @@ const calculate = (expression) => {
         expressionStr = handleAdditionSubtraction(expressionStr);
     }
     
-    return expressionStr;
+    return Number(Number(expressionStr).toFixed(2));
 }
 
 /* ************************************ //

@@ -10,81 +10,120 @@ body, html, #root, .btn {
 }
 
 body {
+    background-color: black;
     min-height: 100vh;
     min-width: 100%;
-    padding: 0rem min(5vw, 1rem) 0rem min(5vw, 1rem);
+    perspective: 30rem;
+    perspective-origin: 50% 50%;
 }
 
 header {
-    min-height: min(10vh, 5rem);
+    background-color: black;
+    color: white;
+    margin: 0rem auto;
+    padding: 0.5rem 0.5rem;
+    text-align: center;
+    transform-style: preserve-3d;
+}
+
+header h1 {
+    font-family: 'Meow Script', 'Source Code Pro', monospace, Cambria, Cochin, Georgia, serif;
+    font-size: min(10vw, 3rem);
+}
+
+header p {
+    font-size: min(5vw, 1rem);
+    margin: 0rem auto;
+    padding: 0rem 0rem;
 }
 
 main {
-    background-color: rgb(45, 55, 70);
-    border: 1px solid darkslategray;
-    border-radius: 0.5rem;
-    box-shadow: inset 0.5rem -0.5rem 0.5rem 0.25rem rgba(255, 255, 255, 0.25), 
-        inset 0.5rem 0.5rem 0.5rem 0.25rem rgba(100, 100, 100, .5),
-        0.1rem 0.1rem 0.5rem 0.25rem rgba(255, 255, 255, 0.75);
-    max-width: 75rem;
+    background-color: white;
+    border: 0.25rem solid black;
+    box-shadow: inset -0.25rem 0.25rem 0.5rem 0rem rgba(15, 30, 50, 0.25), 
+        inset 0.25rem -0.25rem 0.5rem 0.25rem rgba(100, 100, 100, .5),
+        -0.5rem 0.5rem 0.5rem 0rem rgba(0, 0, 0, 0.5);
     min-height: min(75vh, 50rem);
-    margin: 0rem auto;
-    padding: min(5vw, 1rem) 0rem min(5vw, 1rem) 0rem;
+    margin: 0rem 0rem;
+    padding: 0rem min(5%, 1.5rem) 0rem min(5%, 1.5rem);
+    transform-style: preserve-3d;
 }
 
 footer {
-    min-height: min(10vh, 5rem);
+    background-image: repeating-conic-gradient(from 45deg, rgba(45, 60, 80, 1) 0deg 90deg, rgba(15, 30, 50, 1) 90deg 180deg);
+    background-size: 3rem 3rem;
+    border: 0.25rem solid rgba(0, 0, 0, 1);
+    box-shadow: 0rem 0rem 2rem 0rem rgba(15, 30, 50, 0.5);
+    margin: 0rem auto;
+    min-height: min(15vh, 10rem);
+    width: 100%;
+    overflow: hidden;
+    transform: rotateX(90deg);
+    transform-style: preserve-3d;
+    z-index: -1;
 }
 
 .calculator_container {
+    background-color: rgb(15, 30, 50);
+    background-image: radial-gradient(circle at 100% 0%, rgb(131, 172, 224) 0%, rgb(15, 30, 50) 100%);
+    border: 2px solid black;
+    border-radius: 0.5rem;
+    box-shadow: inset -0.25rem 0.25rem 0.5rem 0rem rgba(15, 30, 50, 0.25), 
+        inset 0.25rem -0.25rem 0.5rem 0.25rem rgba(100, 100, 100, .5),
+        -0.5rem 0.5rem 0.5rem 0rem rgba(0, 0, 0, 0.5);
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin: 0 auto;
-    padding: min(5vw, 2rem) min(5vw, 2rem);
+    max-width: 75rem;
+    min-height: min(70vh, 45rem);
+    margin: min(5vw, 1rem) auto;
+    padding: min(5vw, 1rem) min(5vw, 1rem);
+    transform-style: preserve-3d;
+
 }
 
 .input_output_screen, .btn_group {
-    border: 2px solid red;
-    margin: 0.25rem 0.25rem;
+    margin: 0.5rem 0.5rem;
     text-align: center;
 }
 
 .input_output_screen {
     background-color: rgb(215, 230, 255);
-    border: 1px solid red;
+    background-image: radial-gradient(circle at 100% 0%, white 0%, rgb(215, 230, 255) 100%);
+    border: 2px solid black;
     border-radius: 0.5rem;
-    box-shadow: inset 0.5rem -0.5rem 0.5rem 0.25rem rgba(255, 255, 255, 0.25), 
-        inset 0.5rem 0.5rem 0.5rem 0.25rem rgba(255, 255, 255, .5),
-        0.1rem 0.1rem 0.5rem 0.25rem rgba(100, 100, 100, 0.75);
+    box-shadow: inset -0.15rem 0.15rem 0.5rem 0rem rgba(100, 100, 100, 0.25), 
+        inset 0.15rem -0.15rem 0.5rem 0rem rgba(100, 100, 100, .5),
+        -0.15rem 0.15rem 0.5rem 0rem rgba(255, 255, 255, 0.5);
     flex: 2;
-    min-height: min(40vh, 30rem);
+    min-height: min(40vh, 25rem);
     min-width: min(60vw, 30rem);
+    overflow: scroll;
     padding: 1rem 1rem;
     vertical-align: top;
 }
 
 .show_input, .show_output, .old_input_container {
-    border: 2px solid blue;
+    border-bottom: 1px dotted rgba(119, 136, 153, 0.75);
     margin: 0rem auto;
     text-align: right;
 }
 .btn_group {
     flex: 1;
     min-height: min(30vh, 30rem);
-    min-width: min(40vw, 25rem);
+    min-width: min(40vw, 20rem);
     padding: 0rem 0rem;
 }
 
 .btn {
     background-color: rgb(240, 245, 250);
-    border: 1px solid darkslategray;
-    border-radius: 0.5rem;
-    box-shadow: inset 0.25rem -0.25rem 0.5rem 0.25rem rgba(255, 255, 255, 0.25), 
-        inset 0.25rem 0.25rem 0.5rem 0.25rem rgba(100, 100, 100, .5),
-        0.1rem 0.1rem 0.5rem 0.1rem rgba(0, 0, 0, 0.75);
+    border: 1px solid black;
+    border-radius: 0.25rem;
+    box-shadow:  
+        inset 0.15rem -0.15rem 0.25rem 0.1rem rgba(200, 200, 200, .5),
+        -0.15rem 0.15rem 0.25rem 0.1rem black;
     display: inline-block;
-    font-size: min(5vw, 2.5rem);
-    margin: min(0.5vw, 0.5rem) min(0.5vw, 0.25rem);
-    padding: min(2vw, 0.5rem) min(2vw, 1rem);
+    font-size: min(5vw, 2rem);
+    margin: min(0.5vw, 0.5rem) min(0.25vw, 0.25rem);
+    padding: min(2vw, 0.5rem) min(2.5vw, 1rem);
 }
