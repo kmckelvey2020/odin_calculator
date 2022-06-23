@@ -15,7 +15,10 @@ const operate = (operator, value1, value2) => {
             return a * b;
             break;
         case "/":
-            return (a/b).toFixed(3);
+            if(b===0) {
+                console.log("Error: Are you trying to implode the universe? Dividing by zero is not allowed.");
+                return "Error";
+            } else return (a/b).toFixed(3);
             break;
         case "^":
             return Math.pow(a, b);
@@ -49,7 +52,7 @@ const handleParenthesis = (expression) => {
         });
     expressionStr = inputArr.join('');
     // If a set of outer () exists after inner () are evaluated, handle those ()
-    if(expressionStr.includes('(')) {
+    if(expressionStr.includes('(') && !expressionStr.includes("Error")) {
         expressionStr = handleParenthesis(expressionStr);
     }
     // Return once all inner and outer () have been handled
@@ -135,6 +138,7 @@ const handleMultiplicationDivision = (expression) => {
         result = `${inputArr[0]}`;
         for(let i=1; i<inputArr.length; i++) {
             result = operate(`${inputArr[i]}`, result, `${inputArr[i+1]}`);
+            if(`${result}`.includes("Error")) break;
             i++;
         }
     } else {
@@ -216,6 +220,7 @@ const calculate = (expression) => {
     // handle Multiplication and Division (in order from left to right)
     if(expressionStr.includes('*') || expressionStr.includes('/')) {
         expressionStr = handleMultiplicationDivision(expressionStr);
+        if(`${expressionStr}`.includes("Error")) return "Error: Are you trying to implode the universe? Dividing by zero is not allowed.";
     }
 
     // handle Addition and Subtraction (in order from left to right)
@@ -231,10 +236,9 @@ const calculate = (expression) => {
 // ************************************ */
 
 const isValidExpression = (expression) => {
-    //console.log(isValidInput(expression));
-    //console.log(isValidParenthesis(expression));
-    //console.log(isValidOperators(expression));
-    return isValidInput(expression)[0] && isValidParenthesis(expression)[0] && isValidOperators(expression)[0] && isValidDecimals(expression)[0];
+    const errorMsg = `${isValidInput(expression)[1]} ${isValidParenthesis(expression)[1]} ${isValidOperators(expression)[1]} ${isValidDecimals(expression)[1]}`;
+    const isValid = isValidInput(expression)[0] && isValidParenthesis(expression)[0] && isValidOperators(expression)[0] && isValidDecimals(expression)[0];
+    return [isValid, errorMsg];
 }
 
 const isValidInput = (expression) => {
@@ -281,6 +285,12 @@ const isValidOperators = (expression) => {
             return [false, "Error: Invalid operation. Please enter a valid mathematical expression."];
         }
     }
+    // Cannot have a factorial operate on a decimal
+    if(expression.match(/[\d]+\.[\d]+!/g)
+        // Cannot have more than one decimal in a number
+        || expression.match(/\.[\d]*\./g)) {
+        return [false, "Error: Invalid operation. Please enter a valid mathematical expression."];
+    }
     return [true, ''];
 }
 
@@ -315,9 +325,10 @@ const enterEquals = () => {
         expression = expression.replace(/\)\(/g, (x) => {
             return x.replace(/\)/, ')*');
         });
-        if(isValidExpression(expression)) {
+        let validation = [...isValidExpression(expression)];
+        if(validation[0]) {
             result = calculate(expression);
-        }
+        } else result = validation[1];
     }
 
     inputContainer.id = "old_input_container";
@@ -339,7 +350,7 @@ const enterEquals = () => {
     inputOutputContainer.appendChild(newInputContainer);
 }
 
-const enterClear = (event) => {
+const enterClear = () => {
     const inputOutputContainer = document.getElementById("input_output_screen");
     inputOutputContainer.innerHTML = '';
 
