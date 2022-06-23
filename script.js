@@ -56,6 +56,37 @@ const handleParenthesis = (expression) => {
     return `${expressionStr}`;
 }
 
+const handleFactorials = (expression) => {
+    let expressionStr = '';
+    // Validate that only digits, decimals, !, ^, *, /, +, and - are used in expression
+    if(expression.match(/[^-!\d\+\/\*\^\.]/g)) { // Invalid
+        console.log(`Error: Invalid input in handleFactorials function: ${expression}`);
+    } else if(!expression.match(/[^!\d]/g)) { // If only digits/decimals and ! are present
+        expressionStr = `${expression}`.replace(/[\d]+!/, (x) => {
+            return `${x} `
+        });
+        const inputArr = expressionStr
+            .split(' ')
+            .map((element) => {
+                if(`${element}`.match(/^[\d]+!$/)) {
+                    element = `${element}`.substring(0, element.length-1);
+                    element = operate('!', element);
+                    return element;
+                } else return element;
+            });
+        expressionStr = inputArr.join('');
+    } else {
+        // Store ^, *, /, +, - operators and replace them once we handle the !.
+        expressionStr = tempRemoveOperators(/[-\+\*\/\^]/g, expression);
+    }
+    // If another ! exists, recursively call handleFactorials
+    if(`${expressionStr}`.includes('!')) {
+        expressionStr = handleFactorials(`${expressionStr}`);
+    }
+    // Return once all exponents have been handled
+    return `${expressionStr}`;
+}
+
 const handleExponents = (expression) => {
     let expressionStr = '';
     // Validate that only digits, decimals, ^, *, /, +, and - are used in expression
@@ -100,13 +131,10 @@ const handleMultiplicationDivision = (expression) => {
         let expressionStr = `${expression}`.replace(/[\*\/]/g, (x) => {
             return ` ${x} `;
         });
-        console.log(expressionStr);
         const inputArr = expressionStr.split(' ');
-        console.log(inputArr);
         result = `${inputArr[0]}`;
         for(let i=1; i<inputArr.length; i++) {
             result = operate(`${inputArr[i]}`, result, `${inputArr[i+1]}`);
-            console.log(result);
             i++;
         }
     } else {
@@ -118,7 +146,7 @@ const handleMultiplicationDivision = (expression) => {
 
 const handleAdditionSubtraction = (expression) => {
     let result = '';
-    // Validate that only digits, +, and - are used in expression
+    // Validate that only digits, decimals, +, and - are used in expression
     if(expression.match(/[^-\d\+\.]/g)) { //Invalid
         console.log(`Error: Invalid input in handleAdditionSubtraction function: ${expression}`);
     } else {
@@ -145,10 +173,9 @@ const tempRemoveOperators = (untargetedOperRegex, expression) => {
     const operatorArr = expression.match(untargetedOperRegex);
     console.log(operatorArr);
     // Temporarily remove untargeted operators operators
-    let expressionStr = `${expression}`
-        .replace(untargetedOperRegex, ' ');
+    let expressionStr = `${expression}`.replace(untargetedOperRegex, ' ');
     console.log(expressionStr);
-    // Each element is now a digit or a series of target operators and digits to be evaluated
+    // Each element is now a digit/decimal or a series of target operators and digits to be evaluated
     const inputArr = expressionStr
         .split(' ')
         .map((element, index) => {
@@ -171,12 +198,17 @@ const tempRemoveOperators = (untargetedOperRegex, expression) => {
 const calculate = (expression) => {
     let expressionStr = `${expression}`;
 
-    // handle Parentheses first
+    // handle Parentheses
     if(expressionStr.includes('(')) {
         expressionStr = handleParenthesis(expressionStr);
     }
 
-    // handle Exponents second
+    // handle Factorials
+    if(expressionStr.includes('!')) {
+        expressionStr = handleFactorials(expressionStr);
+    }
+
+    // handle Exponents
     if(expressionStr.includes('^')) {
         expressionStr = handleExponents(expressionStr);
     }
@@ -202,7 +234,7 @@ const isValidExpression = (expression) => {
     //console.log(isValidInput(expression));
     //console.log(isValidParenthesis(expression));
     //console.log(isValidOperators(expression));
-    return isValidInput(expression)[0] && isValidParenthesis(expression)[0] && isValidOperators(expression)[0];
+    return isValidInput(expression)[0] && isValidParenthesis(expression)[0] && isValidOperators(expression)[0] && isValidDecimals(expression)[0];
 }
 
 const isValidInput = (expression) => {
@@ -240,15 +272,20 @@ const isValidOperators = (expression) => {
     for(let i=1; i<arr.length; i++) {
         // Cannot have two consecutive operators: "+/"
         if((operators.includes(arr[i-1]) && operators.includes(arr[i]))
-            // Cannot have open parenthesis followed by an operator: "(+"
+            // Cannot have open parenthesis followed by an operator or factorial: "(+"
             || (arr[i-1]==='(' && (operators.includes(arr[i]) || arr[i]==="!"))
             // Cannot have an operator followed by a close parenthesis: "+)"
-            || ((operators.includes(arr[i-1]) || arr[i]==="!") && arr[i]===')')
+            || (operators.includes(arr[i-1]) && arr[i]===')')
             // Cannot have an operator followed by !: "+!"
             || (operators.includes(arr[i-1]) && arr[i]==='!')) {
             return [false, "Error: Invalid operation. Please enter a valid mathematical expression."];
         }
     }
+    return [true, ''];
+}
+
+const isValidDecimals = (expression) => {
+    
     return [true, ''];
 }
 
