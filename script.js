@@ -284,7 +284,7 @@ const isValidOperators = (expression) => {
             // Cannot have expression end with an operator that requires two operands
             || (operators.includes(arr[i]) && i===arr.length-1)
             // Cannot begin expression with an operand other than + or -
-            || (operators.includes(arr[i-1]) && i===1)) {
+            || ('*^%/'.includes(arr[i-1]) && i===1)) {
             return [false, "Error: Invalid operation. Please enter a valid mathematical expression."];
         }
     }
