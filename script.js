@@ -204,7 +204,7 @@ const handleAdditionSubtraction = (expression) => {
             i++;
         }
     }
-    return `${Number(result).toFixed(2)}`;
+    return `${Number(result).toFixed(10)}`;
 }
 
 /* ************************************ //
@@ -231,23 +231,26 @@ const tempRemoveOperators = (untargetedOperRegex, expression) => {
 }
 
 const implicitToExplicitMultiplication = (expression) => {
+    //TODO: Consolidate replace() calls that return equivalent replacements
     // Rewrite multiplication implied by parentheses with explicit * for parsing
-    expression = expression.replace(/[\d]+\(/g, (x) => {
-        return x.replace(/\(/, '*(');
-    });
-    expression = expression.replace(/\)[\d]+/g, (x) => {
+    expression = expression
+        .replace(/[\d]+\(/g, (x) => {
+            return x.replace(/\(/, '*(');
+        })
+        .replace(/\)[\d]+/g, (x) => {
         return x.replace(/\)/, ')*');
-    });
-    expression = expression.replace(/\)\(/g, (x) => {
+        })
+        .replace(/\)\(/g, (x) => {
         return x.replace(/\)/, ')*');
-    });
+        });
     // Rewrite a factorial followed by a digit or ( as explicit multiplication
-    expression = expression.replace(/![\d]+/g, (x) => {
-        return x.replace(/!/, '!*');
-    });
-    expression = expression.replace(/!\(/g, (x) => {
-        return x.replace(/!/, '!*');
-    });
+    expression = expression
+        .replace(/![\d]+/g, (x) => {
+            return x.replace(/!/, '!*');
+        })
+        .replace(/!\(/g, (x) => {
+            return x.replace(/!/, '!*');
+        });
     return expression;
 }
 
