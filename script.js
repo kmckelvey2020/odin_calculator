@@ -34,7 +34,7 @@ const calculate = (expression) => {
         expressionStr = handleAdditionSubtraction(expressionStr);
     }
     
-    return Number(Number(expressionStr).toFixed(2));
+    return Number(Number(expressionStr).toFixed(5));
 }
 
 /* ************************************ //
