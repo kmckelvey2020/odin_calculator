@@ -11,54 +11,55 @@
         <link rel='stylesheet' href='styles.css'>
     </head>
     <body>
-        <header>
-            <h1>Calculator</h1>
-            <p>Have fun!</p>
-        </header>
-        <main id="main" class="main">
-            <div class="calculator_container" id="calculator_container">
-            <div class="input_output_screen" id="input_output_screen" value="1">
-                <div class="show_input" id="show_input"></div>
-            </div>
-            <div class="btn_group" id="btn_group">
-                <div class="row6" id="row6">
-                    <button class="btn clear" id="clear" value="">CLEAR</button>
-                    <button class="btn delete" id="delete" value="">DELETE</button>
+            <header>
+                <h1>Calculator</h1>
+                <p>This calculator is based on the calculator assignment from 'The Odin Project'. However, instead of only performing one operation before accepting the next, this calculator works based on PEMDAS (parenthesis, exponents, multiplication/division (L to R), addition/subtraction (L to R). Factorials are performed after parentheses but before operators requiring two operands.</p>
+            </header>
+            <main id="main" class="main">
+                <div class="calculator_container" id="calculator_container">
+                <div class="input_output_screen" id="input_output_screen" value="1">
+                    <div class="show_input" id="show_input"></div>
                 </div>
-                <div class="row5" id="row5">
-                    <button class="btn input grouping parenthesisL" id="parenthesisL" value="(">(</button>
-                    <button class="btn input grouping parenthesisR" id="parenthesisR" value=")">)</button>
-                    <button class="btn input operation power" id="power" value="^">^</button>
-                    <button class="btn input operation divide" id="divide" value="/">/</button>
+                <div class="btn_group" id="btn_group">
+                    <div class="row6" id="row6">
+                        <button class="btn clear" id="clear" value="">CLEAR</button>
+                        <button class="btn delete" id="delete" value="">DELETE</button>
+                    </div>
+                    <div class="row5" id="row5">
+                        <button class="btn input grouping parenthesisL" id="parenthesisL" value="(">(</button>
+                        <button class="btn input grouping parenthesisR" id="parenthesisR" value=")">)</button>
+                        <button class="btn input operation power" id="power" value="^">^</button>
+                        <button class="btn input operation divide" id="divide" value="/">/</button>
+                    </div>
+                    <div class="row4" id="row4">
+                        <button class="btn input number nine" id="nine" value="9">9</button>
+                        <button class="btn input number eight" id="eight" value="8">8</button>
+                        <button class="btn input number seven" id="seven" value="7">7</button>
+                        <button class="btn input operation multiply" id="multiply" value="*">*</button>
+                    </div>
+                    <div class="row3" id="row3">
+                        <button class="btn input number six" id="six" value="6">6</button>
+                        <button class="btn input number five" id="five" value="5">5</button>
+                        <button class="btn input number four" id="four" value="4">4</button>
+                        <button class="btn input operation subtract" id="subtract" value="-">-</button>
+                    </div>
+                    <div class="row2" id="row2">
+                        <button class="btn input number three" id="three" value="3">3</button>
+                        <button class="btn input number two" id="two" value="2">2</button>
+                        <button class="btn input number one" id="one" value="1">1</button>
+                        <button class="btn input operation add" id="add" value="+">+</button>
+                    </div>
+                    <div class="row1" id="row1">
+                        <button class="btn input number zero" id="zero" value="0">0</button>
+                        <button class="btn input operation factorial" id="factorial" value="!">!</button>
+                        <button class="btn input decimal" id="decimal" value=".">.</button>
+                        <button class="btn equals" id="equals" value="=">=</button>
+                    </div>
                 </div>
-                <div class="row4" id="row4">
-                    <button class="btn input number nine" id="nine" value="9">9</button>
-                    <button class="btn input number eight" id="eight" value="8">8</button>
-                    <button class="btn input number seven" id="seven" value="7">7</button>
-                    <button class="btn input operation multiply" id="multiply" value="*">*</button>
-                </div>
-                <div class="row3" id="row3">
-                    <button class="btn input number six" id="six" value="6">6</button>
-                    <button class="btn input number five" id="five" value="5">5</button>
-                    <button class="btn input number four" id="four" value="4">4</button>
-                    <button class="btn input operation subtract" id="subtract" value="-">-</button>
-                </div>
-                <div class="row2" id="row2">
-                    <button class="btn input number three" id="three" value="3">3</button>
-                    <button class="btn input number two" id="two" value="2">2</button>
-                    <button class="btn input number one" id="one" value="1">1</button>
-                    <button class="btn input operation add" id="add" value="+">+</button>
-                </div>
-                <div class="row1" id="row1">
-                    <button class="btn input number zero" id="zero" value="0">0</button>
-                    <button class="btn input operation factorial" id="factorial" value="!">!</button>
-                    <button class="btn input decimal" id="decimal" value=".">.</button>
-                    <button class="btn equals" id="equals" value="=">=</button>
-                </div>
-            </div>
-        </main>
-        <footer>
-        </footer>
+            </main>
+            <footer>
+                <p>(c) Kristan McKelvey 2022</p>
+            </footer>
     </body>
     <script src="./script.js"></script>
 </html>

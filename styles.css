@@ -10,10 +10,10 @@ body, html, #root, .btn {
 }
 
 body {
-    background-color: black;
+    background-color: white;
     min-height: 100vh;
     min-width: 100%;
-    perspective: 30rem;
+    perspective: 35rem;
     perspective-origin: 50% 50%;
 }
 
@@ -38,7 +38,7 @@ header p {
 }
 
 main {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0);
     border: 0.25rem solid black;
     box-shadow: inset -0.25rem 0.25rem 0.5rem 0rem rgba(15, 30, 50, 0.25), 
         inset 0.25rem -0.25rem 0.5rem 0.25rem rgba(100, 100, 100, .5),
@@ -50,17 +50,20 @@ main {
 }
 
 footer {
-    background-image: repeating-conic-gradient(from 45deg, rgba(45, 60, 80, 1) 0deg 90deg, rgba(15, 30, 50, 1) 90deg 180deg);
+    color: white;
+    font-size: min(7vw, 2rem);
+    background-image: repeating-conic-gradient(from 45deg, rgba(150, 155, 160, 0.75) 0deg 30deg, rgba(180, 185, 190, 0.75) 30deg 60deg, rgba(210, 215, 220, 0.75) 60deg 90deg, rgba(15, 30, 50, 1) 90deg 180deg);
     background-size: 3rem 3rem;
     border: 0.25rem solid rgba(0, 0, 0, 1);
     box-shadow: 0rem 0rem 2rem 0rem rgba(15, 30, 50, 0.5);
     margin: 0rem auto;
     min-height: min(15vh, 10rem);
+    text-align: center;
+    text-shadow: -0.25rem 0.25rem 0.5rem black,
+                -0.15rem 0.15rem 0rem black;
     width: 100%;
-    overflow: hidden;
-    transform: rotateX(90deg);
+    transform: rotateX(0deg);
     transform-style: preserve-3d;
-    z-index: -1;
 }
 
 .calculator_container {
@@ -70,7 +73,8 @@ footer {
     border-radius: 0.5rem;
     box-shadow: inset -0.25rem 0.25rem 0.5rem 0rem rgba(15, 30, 50, 0.25), 
         inset 0.25rem -0.25rem 0.5rem 0.25rem rgba(100, 100, 100, .5),
-        -0.5rem 0.5rem 0.5rem 0rem rgba(0, 0, 0, 0.5);
+        -0.5rem 0.5rem 0.5rem 0.25rem rgba(0, 0, 0, 0.5),
+        -0.25rem 0.5rem rgb(15, 30, 50);
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -78,8 +82,9 @@ footer {
     min-height: min(70vh, 45rem);
     margin: min(5vw, 1rem) auto;
     padding: min(5vw, 1rem) min(5vw, 1rem);
+    transform: rotateX(15deg) translateY(-2rem);
     transform-style: preserve-3d;
-
+    z-index: 10;
 }
 
 .input_output_screen, .btn_group {
