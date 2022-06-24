@@ -97,6 +97,7 @@ footer {
         -0.15rem 0.15rem 0.5rem 0rem rgba(255, 255, 255, 0.5);
     flex: 2;
     min-height: min(40vh, 25rem);
+    max-height: min(40vh, 50rem);
     min-width: min(60vw, 30rem);
     overflow: scroll;
     padding: 1rem 1rem;
@@ -105,6 +106,7 @@ footer {
 
 .show_input, .show_output, .old_input_container {
     border-bottom: 1px dotted rgba(119, 136, 153, 0.75);
+    font-size: min(7vw, 2rem);
     margin: 0rem auto;
     text-align: right;
 }
@@ -123,7 +125,7 @@ footer {
         inset 0.15rem -0.15rem 0.25rem 0.1rem rgba(200, 200, 200, .5),
         -0.15rem 0.15rem 0.25rem 0.1rem black;
     display: inline-block;
-    font-size: min(5vw, 2rem);
+    font-size: min(7vw, 2rem);
     margin: min(0.5vw, 0.5rem) min(0.25vw, 0.25rem);
     padding: min(2vw, 0.5rem) min(2.5vw, 1rem);
 }

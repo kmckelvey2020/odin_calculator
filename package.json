@@ -1,0 +1,20 @@
+{
+  "name": "odin_calculator",
+  "version": "1.0.0",
+  "description": "A calculator based on the calculator assignment from 'The Odin Project'. Instead of only performing one operation before accepting another, this calculator works based on PEMDAS (parenthesis, exponents, multiplication/division, addition/subtraction. Factorials are performed after parentheses but before operators requiring two operands.",
+  "main": "index.html",
+  "author": "Kristan McKelvey",
+  "devDependencies": {
+    "jest": "^28.1.1",
+    "jest-cli": "^28.1.1",
+    "eslint": "^7.26.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "eslintConfig": {
+    "root": true
+  }
+}

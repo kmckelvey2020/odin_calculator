@@ -236,8 +236,8 @@ const calculate = (expression) => {
 // ************************************ */
 
 const isValidExpression = (expression) => {
-    const errorMsg = `${isValidInput(expression)[1]} ${isValidParenthesis(expression)[1]} ${isValidOperators(expression)[1]}`;
-    const isValid = isValidInput(expression)[0] && isValidParenthesis(expression)[0] && isValidOperators(expression)[0];
+    const errorMsg = `${isValidInput(expression)[1]} ${isValidParenthesis(expression)[1]} ${isValidOperators(expression)[1]} ${isValidDecimals(expression)[1]}`;
+    const isValid = isValidInput(expression)[0] && isValidParenthesis(expression)[0] && isValidOperators(expression)[0] && isValidDecimals(expression)[0];
     return [isValid, errorMsg];
 }
 
@@ -285,16 +285,41 @@ const isValidOperators = (expression) => {
             || (operators.includes(arr[i]) && i===arr.length-1)
             // Cannot begin expression with an operand other than + or -
             || ('*^%/'.includes(arr[i-1]) && i===1)) {
-            return [false, "Error: Invalid operation. Please enter a valid mathematical expression."];
+            return [false, "Error: Invalid syntax. Please enter a valid mathematical expression."];
         }
     }
+    return [true, ''];
+}
+
+const isValidDecimals = (expression) => {
     // Cannot have a factorial operate on a decimal
     if(expression.match(/[\d]+\.[\d]+!/g)
         // Cannot have more than one decimal in a number
         || expression.match(/\.[\d]*\./g)) {
-        return [false, "Error: Invalid operation. Please enter a valid mathematical expression."];
+        return [false, "Error: Invalid syntax. Please enter a valid mathematical expression."];
     }
     return [true, ''];
+}
+
+const implicitToExplicitMultiplication = (expression) => {
+    // Rewrite multiplication implied by parentheses with explicit * for parsing
+    expression = expression.replace(/[\d]+\(/g, (x) => {
+        return x.replace(/\(/, '*(');
+    });
+    expression = expression.replace(/\)[\d]+/g, (x) => {
+        return x.replace(/\)/, ')*');
+    });
+    expression = expression.replace(/\)\(/g, (x) => {
+        return x.replace(/\)/, ')*');
+    });
+    // Rewrite a factorial followed by a digit or ( as explicit multiplication
+    expression = expression.replace(/![\d]+/g, (x) => {
+        return x.replace(/!/, '!*');
+    });
+    expression = expression.replace(/!\(/g, (x) => {
+        return x.replace(/!/, '!*');
+    });
+    return expression;
 }
 
 /* ************************************ //
@@ -313,16 +338,9 @@ const enterEquals = () => {
         result = "Error: No expression entered.";
     } else {
         let expression = inputContainer.innerHTML;
-        // Rewrite multiplication implied by parentheses with explicit * for parsing
-        expression = expression.replace(/[\d]+\(/g, (x) => {
-            return x.replace(/\(/, '*(');
-        });
-        expression = expression.replace(/\)[\d]+/g, (x) => {
-            return x.replace(/\)/, ')*');
-        });
-        expression = expression.replace(/\)\(/g, (x) => {
-            return x.replace(/\)/, ')*');
-        });
+        console.log(expression);
+        expression = implicitToExplicitMultiplication(expression);
+        console.log(expression);
         let validation = [...isValidExpression(expression)];
         if(validation[0]) {
             result = calculate(expression);
@@ -332,17 +350,19 @@ const enterEquals = () => {
     inputContainer.id = "old_input_container";
     inputContainer.className = "old_input_container";
 
-    const newInputContainer = document.createElement('div');
-    newInputContainer.id = "show_input";
-    newInputContainer.className = "show_input";
-    newInputContainer.style.textAlign = "right";
-    newInputContainer.innerHTML = '';
+    if(`${result}`.includes("Error")) inputOutputContainer.innerHTML = '';
     
     const outputContainer = document.createElement('div');
     outputContainer.id = "show_output";
     outputContainer.className = "show_output";
     outputContainer.style.textAlign = "right";
     outputContainer.innerHTML = `${result}`;
+
+    const newInputContainer = document.createElement('div');
+    newInputContainer.id = "show_input";
+    newInputContainer.className = "show_input";
+    newInputContainer.style.textAlign = "right";
+    newInputContainer.innerHTML = '';
 
     inputOutputContainer.appendChild(outputContainer);
     inputOutputContainer.appendChild(newInputContainer);
