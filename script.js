@@ -337,7 +337,11 @@ const isValidDecimals = (expression) => {
 // ************************************ */ 
 const enterInput = (event) => {
     const inputContainer = document.getElementById("show_input");
-    inputContainer.innerHTML += `${event.target.value}`;
+    if(event.key) {
+        inputContainer.innerHTML += `${event.key}`;
+    } else {
+        inputContainer.innerHTML += `${event.target.value}`;
+    }
 }
 
 const enterEquals = () => {
@@ -348,9 +352,7 @@ const enterEquals = () => {
         result = "Error: No expression entered.";
     } else {
         let expression = inputContainer.innerHTML;
-        console.log(expression);
-        expression = implicitToExplicitMultiplication(expression);
-        console.log(expression);
+        //expression = implicitToExplicitMultiplication(expression);
         let validation = [...isValidExpression(expression)];
         if(validation[0]) {
             result = calculate(expression);
@@ -405,13 +407,25 @@ const addListeners = () => {
     const equals = document.querySelector(".equals");
     const clear = document.querySelector(".clear");
     const deleteOne = document.querySelector(".delete");
+    
     inputs.forEach((input) => {
         input.addEventListener('click', enterInput);
     });
     equals.addEventListener('click', enterEquals);
     clear.addEventListener('click', enterClear);
     deleteOne.addEventListener('click', enterDelete);
+    window.addEventListener('keydown', function(event) {
+        const btn = document.querySelector(`button[value="${event.key}"]`);
+        if((btn && event.key==="=") || event.key==="Enter") {
+            enterEquals();
+        } else if(event.key==="Backspace" || event.key==="Delete") {
+            enterDelete();
+        } else if(event.key==="Escape") {
+            enterClear();
+        } else if(btn) {
+            enterInput(event);
+        } else return;
+    });
 }
 
 addListeners();
-

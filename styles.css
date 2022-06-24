@@ -82,7 +82,7 @@ footer {
     min-height: min(70vh, 45rem);
     margin: min(5vw, 1rem) auto;
     padding: min(5vw, 1rem) min(5vw, 1rem);
-    transform: rotateX(15deg) translateY(-2rem);
+    transform: rotateX(15deg) translateY(-2.5rem);
     transform-style: preserve-3d;
     z-index: 10;
 }
