@@ -236,8 +236,8 @@ const calculate = (expression) => {
 // ************************************ */
 
 const isValidExpression = (expression) => {
-    const errorMsg = `${isValidInput(expression)[1]} ${isValidParenthesis(expression)[1]} ${isValidOperators(expression)[1]} ${isValidDecimals(expression)[1]}`;
-    const isValid = isValidInput(expression)[0] && isValidParenthesis(expression)[0] && isValidOperators(expression)[0] && isValidDecimals(expression)[0];
+    const errorMsg = `${isValidInput(expression)[1]} ${isValidParenthesis(expression)[1]} ${isValidOperators(expression)[1]}`;
+    const isValid = isValidInput(expression)[0] && isValidParenthesis(expression)[0] && isValidOperators(expression)[0];
     return [isValid, errorMsg];
 }
 
@@ -270,7 +270,6 @@ const isValidParenthesis = (expression) => {
 }
 
 const isValidOperators = (expression) => {
-    // Todo: Check to make sure expression doesn't end with an operator that requires two operands. Check to make sure expression doesn't begin with an operator (if it begins with -, treat as negative). Ignore leading + sign.
     const operators = ["+", "-", "*", "/", "^", "%"];
     const arr = expression.split('');
     for(let i=1; i<arr.length; i++) {
@@ -281,7 +280,11 @@ const isValidOperators = (expression) => {
             // Cannot have an operator followed by a close parenthesis: "+)"
             || (operators.includes(arr[i-1]) && arr[i]===')')
             // Cannot have an operator followed by !: "+!"
-            || (operators.includes(arr[i-1]) && arr[i]==='!')) {
+            || (operators.includes(arr[i-1]) && arr[i]==='!')
+            // Cannot have expression end with an operator that requires two operands
+            || (operators.includes(arr[i]) && i===arr.length-1)
+            // Cannot begin expression with an operand other than + or -
+            || (operators.includes(arr[i-1]) && i===1)) {
             return [false, "Error: Invalid operation. Please enter a valid mathematical expression."];
         }
     }
@@ -291,11 +294,6 @@ const isValidOperators = (expression) => {
         || expression.match(/\.[\d]*\./g)) {
         return [false, "Error: Invalid operation. Please enter a valid mathematical expression."];
     }
-    return [true, ''];
-}
-
-const isValidDecimals = (expression) => {
-    
     return [true, ''];
 }
 
