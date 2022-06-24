@@ -45,10 +45,8 @@ main {
     box-shadow: inset -0.25rem 0.25rem 0.5rem 0rem rgba(15, 30, 50, 0.25), 
         inset 0.25rem -0.25rem 0.5rem 0.25rem rgba(100, 100, 100, .5),
         -0.5rem 0.5rem 0.5rem 0rem rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
     min-height: min(80vh, 60rem);
-    margin: 0rem 0rem;
+    margin: 0rem auto;
     padding: 0rem min(5%, 1.5rem) 0rem min(5%, 1.5rem);
     transform-style: preserve-3d;
 }
@@ -83,7 +81,7 @@ footer {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    max-width: 75rem;
+    max-width: 65rem;
     min-height: min(65vh, 45rem);
     margin: min(10vw, 2rem) auto min(15vw, 4rem) auto;
     padding: min(5vw, 1rem) min(5vw, 1rem);
